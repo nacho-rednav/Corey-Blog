@@ -1,0 +1,19 @@
+{% extends "blog/base.html" %}
+{% block content %}
+    <div class="content-section">
+        <form method ="POST">     <!--La classview se encarga de practicamente todo--> 
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Delete Post</legend>
+                <h2>Are you sure you want to delete the post "{{ object.title }}"?</h2>
+            </fieldset>
+            <div class="form-group"> <!--No hace falta meter ningun form, si le da al boton de submit el classview entiende que ese
+                                      boton debe ser el de borrar-->
+                <button class="btn btn-outline-danger mt-3 mb-2" type="submit">Delete</button>
+                <a class="btn btn-outline-secondary mt-3 mb-2" href="{% url 'post-detail' object.id %}">Cancel</a>
+                                            <!--Por si le diste sin querer, este url te manda al post en el que estabas
+                                            El object.id es como el pk que tenemos ne los url-->
+            </div>
+        </form> 
+    </div>
+{% endblock content %}

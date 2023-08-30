@@ -1,0 +1,7 @@
+<form action="{% url 'post-like' post.pk %}" method="POST">
+    {% csrf_token %}
+    <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary btn-sm">
+        Like
+    </button> - {{ post.likes.count }}
+    <input type="hidden" name="next" value="{{ request.build_absolute_uri }}">
+</form>

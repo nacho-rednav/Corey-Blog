@@ -1,0 +1,18 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">   <!--El template de update y create post, ambos son muy guales aunque con
+                                    funcionalidades algo diferentes las cuales gestionan las classviews-->
+        <form method ="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Write your thoughts!</legend>
+                {{ form|crispy }}  <!--Aqui las views pasan el form que vayan a usar-->
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info mt-3 mb-2" type="submit">Comment</button>
+                <input type="hidden" name="next" value="{{ request.build_absolute_uri }}">
+            </div>
+        </form> 
+    </div>
+{% endblock content %}

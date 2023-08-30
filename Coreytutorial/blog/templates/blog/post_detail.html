@@ -1,0 +1,51 @@
+{% extends "blog/base.html" %} <!--Se pone para que herede del base.html-->
+{% block content %} <!--Lo que haya aqui dentro sera lo que meta en el base.html-->
+<article class="media content-section">
+    <div class="media-body">
+        <div class="article-metadata"> <!--Asi accedo a varibales-->
+            <img class="rounded-circle article-img" src="{{ post.author.profile.image.url}}" alt="Author`s profile pic">
+            <a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a> 
+            <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+            {% if post.author == user %}
+            <div class="mb-2 mt-2">
+                <a class="btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-update' post.id %}">Update</a>
+                <a class="btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' post.id %}">Delete</a>
+            </div>
+            {% endif %}
+        </div>
+        <h2 class="article-title">{{ post.title }}</h2>
+        <p class="mb-3 article-content">{{ post.content }}</p>
+        {% if post.image != "" %}
+            <img class="mx-auto d-block" src="{{ post.image.url}}" alt="Uploaded pic">
+        {% endif %}
+        <br>
+
+        {% include 'blog/like_feature.html' %}
+        
+    </div>
+</article>
+<div class="media content-section">
+    <a class="mr-2" href="{% url 'commentary-create' post.id %}">Comment Something...</a>
+    <h2>Comments</h2>
+    <br>
+    {% if not post.comments.all %} <!--Detecta si no hay comentarios-->
+        <h5 class="text-muted">Be the first to comment!</h3>
+    {% else %}
+        {% for comment in post.comments.all %} <!--Si los hay simplemete hacemos loop-->
+            <div class="media-body">
+                <div class="article-metadata"> <!--Asi accedo a varibales-->
+                    <img class="rounded-circle article-img" src="{{ comment.author.profile.image.url}}" alt="Author`s profile pic">
+                    <a class="mr-2" href="{% url 'user-posts' comment.author.username %}">{{ comment.author }}</a> 
+                    <small class="text-muted">{{ comment.date_posted|date:"F d, Y" }}</small>
+                </div>
+                <p>{{ comment.content }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock content %}
+
+<!--Django llama por defecto post a la variable que se vaya a pasar al template
+por eso pone object.author, etc. En home.html pone post.author (usa post) porque
+le hemos especificado en las views que la variable se llama posts y de esos posts
+hacemos bucle for por cada post-->
